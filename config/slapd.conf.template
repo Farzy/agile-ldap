@@ -1,0 +1,214 @@
+# This is the main slapd configuration file. See slapd.conf(5) for more
+# info on the configuration options.
+
+# Global Directives:
+
+# Features to permit
+#allow bind_v2
+
+# Schema and objectClass definitions
+include         /etc/ldap/schema/core.schema
+include         /etc/ldap/schema/cosine.schema
+include         /etc/ldap/schema/nis.schema
+include         /etc/ldap/schema/inetorgperson.schema
+include         /etc/ldap/schema/customer.schema
+
+# Where the pid file is put. The init.d script
+# will not stop the server if you change this.
+pidfile         /var/run/slapd/slapd.pid
+
+# List of arguments that were passed to the server
+argsfile        /var/run/slapd/slapd.args
+
+# Read slapd.conf(5) for possible values
+#loglevel        none
+loglevel	sync
+
+# Where the dynamically loaded modules are stored
+modulepath	/usr/lib/ldap
+moduleload	back_hdb
+moduleload	syncprov
+moduleload	back_monitor
+moduleload	unique
+moduleload	constraint
+
+# The maximum number of entries that is returned for a search operation
+sizelimit 500
+
+# The tool-threads parameter sets the actual amount of cpu's that is used
+# for indexing.
+tool-threads 1
+
+# Configuration SSL/TLS
+TLSCACertificateFile /etc/ssl/certs/ca-certificates.crt
+TLSCertificateFile /etc/ldap/customer-ldap.crt
+TLSCertificateKeyFile /etc/ldap/customer-ldap.key
+TLSVerifyClient never
+
+# Replication configuration
+serverid	@@SERVER_NUMBER@@	ldaps://@@SERVER_NAME@@:636
+
+#######################################################################
+# Specific Backend Directives for hdb:
+# Backend specific directives apply to this backend until another
+# 'backend' directive occurs
+backend		hdb
+
+#######################################################################
+# Specific Backend Directives for 'other':
+# Backend specific directives apply to this backend until another
+# 'backend' directive occurs
+#backend		<other>
+
+#######################################################################
+# Specific Directives for database #1, of type hdb:
+# Database specific directives apply to this databasse until another
+# 'database' directive occurs
+database        hdb
+
+# The base of your directory in database #1
+suffix          "dc=customer,dc=com"
+
+# rootdn directive for specifying a superuser on the database. This is needed
+# for syncrepl.
+rootdn          "cn=admin,dc=customer,dc=com"
+
+# Where the database file are physically stored for database #1
+directory       "/var/lib/ldap"
+
+# The dbconfig settings are used to generate a DB_CONFIG file the first
+# time slapd starts.  They do NOT override existing an existing DB_CONFIG
+# file.  You should therefore change these settings in DB_CONFIG directly
+# or remove DB_CONFIG and restart slapd for changes to take effect.
+
+# For the Debian package we use 2MB as default but be sure to update this
+# value if you have plenty of RAM
+dbconfig set_cachesize 0 2097152 0
+
+# Sven Hartge reported that he had to set this value incredibly high
+# to get slapd running at all. See http://bugs.debian.org/303057 for more
+# information.
+
+# Number of objects that can be locked at the same time.
+dbconfig set_lk_max_objects 1500
+# Number of locks (both requested and granted)
+dbconfig set_lk_max_locks 1500
+# Number of lockers
+dbconfig set_lk_max_lockers 1500
+
+# Size Limit for this database
+# Higher limits for "admin" and "reader" accounts
+limits dn="cn=(admin|reader),dc=customer,dc=com" size=5000
+
+# Indexing options for database #1
+index           objectClass eq
+index		cn,sn,mail	eq,approx,sub
+index		uid,mtAlias	eq,approx
+index		o		eq,approx,sub
+index		mtStatus	eq,sub
+index		owner		eq
+index		employeeType	eq,sub
+index		mtRightName	eq,sub
+index		mtServerName	eq,sub
+index	        entryCSN        eq
+index           entryUUID       eq
+
+# Replication
+overlay syncprov
+syncprov-checkpoint 100 10
+syncprov-sessionlog 100
+
+# Unique IDs
+overlay		unique
+# "uid" must be unique for mtOrganiation
+unique_uri	ldap:///?uid?sub?(objectClass=mtOrganization)
+# "uid", "mtAlias" and "mail" must be unique for mtPerson
+unique_uri	ldap:///?uid,mtAlias,mail?sub?(objectClass=mtPerson)
+
+# Constraints
+overlay		constraint
+constraint_attribute mail regex "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$"
+
+# Let the replica DN have limitless searches
+limits dn.exact="cn=replicator,dc=customer,dc=com" time.soft=unlimited time.hard=unlimited size.soft=unlimited size.hard=unlimited
+
+syncRepl rid=1
+        provider=ldaps://@@SERVER_NAME_OTHER@@:636
+        binddn="cn=replicator,dc=customer,dc=com"
+        bindmethod=simple
+        credentials=R3pl1cat3
+        searchbase="dc=customer,dc=com"
+        type=refreshAndPersist
+        retry="30 10 300 +"
+        interval=00:00:00:10
+	schemachecking=on
+	tls_cacert=/etc/ssl/certs/ca-certificates.crt
+	tls_cert=/etc/ldap/customer-ldap.crt
+	tls_key=/etc/ldap/customer-ldap.key
+	tls_reqcert=demand
+
+mirrormode true
+
+# Save the time that the entry gets modified, for database #1
+lastmod         on
+
+# Checkpoint the BerkeleyDB database periodically in case of system
+# failure and to speed slapd shutdown.
+checkpoint      512 30
+
+# Where to store the replica logs for database #1
+# replogfile	/var/lib/ldap/replog
+
+# The userPassword by default can be changed
+# by the entry owning it if they are authenticated.
+# Others should not be able to see it, except the
+# admin entry below
+# These access lines apply to database #1 only
+access to attrs=userPassword,shadowLastChange
+        by dn="cn=admin,dc=customer,dc=com" write
+        by dn="cn=replicator,dc=customer,dc=com" write
+        by anonymous auth
+        by self write
+        by * none
+
+# Ensure read access to the base for things like
+# supportedSASLMechanisms.  Without this you may
+# have problems with SASL not knowing what
+# mechanisms are available and the like.
+# Note that this is covered by the 'access to *'
+# ACL below too but if you change that as people
+# are wont to do you'll still need this if you
+# want SASL (and possible other things) to work 
+# happily.
+access to dn.base="" by * read
+
+# The admin dn has full write access, the reader dn
+# has read only access, everyone else is denied
+# access.
+access to *
+        by dn="cn=admin,dc=customer,dc=com" write
+        by dn="cn=reader,dc=customer,dc=com" read
+        by dn="cn=replicator,dc=customer,dc=com" read
+        by * none
+
+# For Netscape Roaming support, each user gets a roaming
+# profile for which they have write access to
+#access to dn=".*,ou=Roaming,o=morsnet"
+#        by dn="cn=admin,dc=customer,dc=com" write
+#        by dnattr=owner write
+
+#######################################################################
+# Specific Directives for database #2, of type 'other' (can be hdb too):
+# Database specific directives apply to this databasse until another
+# 'database' directive occurs
+#database        <other>
+
+# The base of your directory for database #2
+#suffix		"dc=debian,dc=org"
+
+#######################################################################
+database monitor
+
+rootdn "cn=monitoring,cn=Monitor"
+rootpw monitoring
+

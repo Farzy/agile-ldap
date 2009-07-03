@@ -1,0 +1,150 @@
+## Fichier de schéma personnalisé pour Customer
+# :vim:noet:
+##
+## Copyright 2009 Customer / Pragmatic Source
+##
+## Redistribution and use in source and binary forms, with or without
+## modification, are permitted only as authorized by the GPLv3 license
+##
+##  This program is free software: you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation, either version 3 of the License, or
+##  (at your option) any later version.
+##
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU General Public License for more details.
+##
+##  You should have received a copy of the GNU General Public License
+##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#
+# Customer's directory schema items
+#
+# depends upon:
+#	core.schema
+#	cosine.schema
+#	inetorgperson.schema
+#	nis.schema
+#
+
+objectIdentifier CustomerRoot 1.3.6.1.4.1.4269
+
+objectIdentifier Customer CustomerRoot:1
+objectIdentifier CustomerAttributeType Customer:3
+objectIdentifier CustomerObjectClass Customer:4
+
+# Customer attributes
+# --------------------
+
+# Customer status:
+# - online
+# - offline
+# - archived
+attributetype ( CustomerAttributeType:1
+	NAME 'mtStatus'
+	DESC 'Customer customer status'
+	SUP  name )
+
+# Monthly quota (in Gb)
+attributetype ( CustomerAttributeType:2
+	NAME 'mtMonthlyQuota'
+	DESC 'Customer customer monthly quota'
+	SUP  name )
+
+# Aliases for the 'uid' attribute
+attributetype ( CustomerAttributeType:3
+	NAME 'mtAlias'
+	DESC 'login aliases'
+	SUP  uid )
+
+# Customer or User options
+attributetype ( CustomerAttributeType:4
+	NAME 'mtOption'
+	DESC 'Features available for customers or users'
+	SUP  name )
+
+# Date attribute
+attributetype ( CustomerAttributeType:5
+	NAME 'mtDate'
+	DESC 'Generic date field'
+	SUP  name )
+
+# Server name
+attributetype ( CustomerAttributeType:6
+	NAME 'mtServerName'
+	DESC 'Server short name'
+	SINGLE-VALUE
+	SUP  name )
+
+# A single right's name
+attributetype ( CustomerAttributeType:7
+	NAME 'mtRightName'
+	DESC 'User right name'
+	SINGLE-VALUE
+	SUP  name )
+
+# A single right's type
+attributetype ( CustomerAttributeType:8
+	NAME 'mtRightType'
+	DESC 'User right type (boolean, string)'
+	SINGLE-VALUE
+	SUP  name )
+
+# A single right's value
+attributetype ( CustomerAttributeType:9
+	NAME 'mtRightValue'
+	DESC 'User right value. Can be multivalued'
+	SUP  name )
+
+
+# Customer objectClasses
+# -----------------------
+
+# Add country, status, quota and a unique identified to "organization"
+objectClass ( CustomerObjectClass:1
+	NAME 'mtOrganization'
+	DESC 'Customer Organizational Object'
+        SUP  organization STRUCTURAL
+	MUST ( uid $ mtStatus )
+	MAY  ( countryName $ mtMonthlyQuota $ mtOption ) )
+
+# Customer or user options list
+objectClass ( CustomerObjectClass:2
+	NAME 'mtCustomerOptionList'
+	DESC 'Customer options'
+	SUP  top STRUCTURAL
+	MUST ( cn )
+	MAY  ( description $ mtOption ) )
+
+# User object
+objectClass ( CustomerObjectClass:3
+	NAME 'mtPerson'
+	DESC 'Customer person description (for internal and customer employees)'
+	SUP  inetOrgPerson STRUCTURAL
+	MAY  ( countryName $ mtAlias $ mtOption ) )
+
+# Server object
+objectClass ( CustomerObjectClass:4
+	NAME 'mtServer'
+	DESC 'Customer server description'
+	SUP  top STRUCTURAL
+	MUST ( mtServerName $ ipHostNumber $ host )
+	MAY  ( description $ mtDate $ owner ) )
+
+# User rights on a server
+objectClass (CustomerObjectClass:5
+	NAME 'mtServerRight'
+	DESC 'Description of a user right for a given server'
+	SUP  top STRUCTURAL
+	MUST ( mtServerName $ mtRightValue ) )
+
+# Customer's user rights
+objectClass (CustomerObjectClass:6
+	NAME 'mtCustomerRight'
+	DESC 'Description of a Customer user right'
+	SUP  top STRUCTURAL
+	MUST ( mtRightName $mtRightValue )
+	MAY  ( mtRightType ) )
+

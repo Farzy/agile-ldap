@@ -1,0 +1,389 @@
+dn: dc=customer,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: customer.com
+dc: customer
+
+dn: cn=admin,dc=customer,dc=com
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
+userPassword:: e1NTSEF9SVFraUhnT0JRM2Z1bUhybTAvOXBoUytEWGNzUnhkUmdaME45eUE9PQ=
+ =
+
+dn: ou=Internal,dc=customer,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: Internal
+
+dn: ou=Customers,dc=customer,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: Customers
+
+dn: o=Autoworld,ou=Customers,dc=customer,dc=com
+mtStatus: online
+objectClass: mtOrganization
+objectClass: organization
+objectClass: top
+description: Une world company
+o: Autoworld
+uid: 1234
+
+dn: o=XBWA,ou=Customers,dc=customer,dc=com
+postalCode: 92100
+l: Boulogne Billancourt
+objectClass: mtOrganization
+objectClass: organization
+objectClass: top
+c: France
+mtMonthlyQuota: 10
+o: XBWA
+description: Pub pub !
+facsimileTelephoneNumber: +33 1 43 54 11 11
+postalAddress: 16 rue de Billancourt
+telephoneNumber: +33 1 45 11 22 33
+mtStatus: online
+uid: 34542
+
+dn: o=Autoworld France,o=Autoworld,ou=Customers,dc=customer,dc=com
+mtMonthlyQuota: 10
+o: Autoworld France
+postOfficeBox: Cedex 3454
+telephoneNumber: +33 1 45 43 54 65
+l: Boulogne Billancourt
+objectClass: mtOrganization
+objectClass: organization
+objectClass: top
+facsimileTelephoneNumber: +33 1 43 54 76 87
+mtStatus: online
+postalAddress:: QsOidGltZW50IDQkNSBydWUgZGUgUGFyaXMk
+c: France
+postalCode: 92100
+description: Une world company
+uid: 1234FR
+
+dn: o=Autoworld Italy,o=Autoworld,ou=Customers,dc=customer,dc=com
+o: Autoworld Italy
+objectClass: mtOrganization
+objectClass: organization
+objectClass: top
+description: Une world company
+mtStatus: online
+c: Italie
+facsimileTelephoneNumber: +45 33 44 55 66
+l: Milan
+mtMonthlyQuota: 20
+postalAddress: 43 rue Parmesan
+postalCode: 4300
+telephoneNumber: +45 5544 554
+uid: 1234IT
+
+dn: o=Customer,ou=Internal,dc=customer,dc=com
+mtStatus: online
+objectClass: mtOrganization
+objectClass: organization
+objectClass: top
+o: Customer
+description: Nous !
+uid: 0001
+
+dn: cn=All Customer Options,ou=Internal,dc=customer,dc=com
+objectClass: mtCustomerOptionList
+objectClass: top
+mtOption:: UmVwb3J0aW5nIEfDqW9sb2NhbGlzYXRpb24=
+mtOption: Gestion du nombre de connexions
+mtOption: Webinar
+mtOption: WebTV
+mtOption: Encodage HQ
+mtOption: Classement
+mtOption: Filtrage Geoloc
+mtOption: Geo Blocking
+cn: All Customer Options
+description: List of all authorized customer options
+
+dn: cn=options,o=XBWA,ou=Customers,dc=customer,dc=com
+objectClass: mtCustomerOptionList
+objectClass: top
+mtOption: Webinar
+mtOption: WebTV
+mtOption: Classement
+cn: options
+
+dn: cn=options,o=Autoworld France,o=Autoworld,ou=Customers,dc=customer,dc=com
+objectClass: mtCustomerOptionList
+objectClass: top
+mtOption:: UmVwb3J0aW5nIEfDqW9sb2NhbGlzYXRpb24=
+mtOption: Gestion du nombre de connexions
+mtOption: Webinar
+mtOption: WebTV
+mtOption: Encodage HQ
+mtOption: Classement
+mtOption: Filtrage Geoloc
+mtOption: Geo Blocking
+cn: options
+
+dn: cn=options,o=Autoworld Italy,o=Autoworld,ou=Customers,dc=customer,dc=com
+objectClass: mtCustomerOptionList
+objectClass: top
+mtOption:: UmVwb3J0aW5nIEfDqW9sb2NhbGlzYXRpb24=
+mtOption: Gestion du nombre de connexions
+mtOption: Webinar
+mtOption: WebTV
+mtOption: Encodage HQ
+mtOption: Classement
+mtOption: Filtrage Geoloc
+mtOption: Geo Blocking
+cn: options
+
+dn: cn=All User Types,ou=Internal,dc=customer,dc=com
+objectClass: mtCustomerOptionList
+objectClass: top
+mtOption: superadmin
+mtOption: admin
+mtOption: user
+mtOption: readonly
+description: List of all authorized user types
+cn: All User Types
+
+dn: cn=Anton Simmons,o=Customer,ou=Internal,dc=customer,dc=com
+mobile: +33 6 12 34 56 78
+postalAddress: 1 rue de la Ville
+objectClass: mtPerson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+postOfficeBox: CEDEX 42
+c: France
+telephoneNumber: +33 1 54 32 65 76
+employeeType: superadmin
+title: Directeur Technique
+facsimileTelephoneNumber: +33 1 65 87 93 21
+userPassword:: e1NTSEF9OE1jWHRLK050c0R3SXJaZDhOVXoyWjdYQzlTd1oyaDYyK1l4NGc9PQ=
+ =
+cn: Anton Simmons
+sn: Simmons
+givenName: Anton
+l: Versailles
+mtAlias: anton
+postalCode: 78001
+uid: asimmons
+mail: anton.simmons@customer.com
+
+dn: ou=Servers,dc=customer,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: Servers
+description: Dedicated customer servers
+
+dn: mtServerName=dedibox1,ou=Servers,dc=customer,dc=com
+owner: o=XBWA,ou=Customers,dc=customer,dc=com
+objectClass: mtServer
+objectClass: top
+mtDate: 2009-10-10
+host: dedi1.customer.com
+ipHostNumber: 10.0.0.1
+mtServerName: dedibox1
+
+dn: mtServerName=dedibox2,ou=Servers,dc=customer,dc=com
+owner: o=Autoworld France,o=Autoworld,ou=Customers,dc=customer,dc=com
+objectClass: mtServer
+objectClass: top
+mtDate: 2010-10-10
+host: dedi2.customer.com
+ipHostNumber: 10.0.0.2
+mtServerName: dedibox2
+
+dn: mtServerName=dedibox3,ou=Servers,dc=customer,dc=com
+objectClass: mtServer
+objectClass: top
+host: dedi3.customer.com
+ipHostNumber: 10.0.0.3
+mtServerName: dedibox3
+
+dn: cn=reader,dc=customer,dc=com
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+userPassword:: e1NTSEF9SVFraUhnT0JRM2Z1bUhybTAvOXBoUytEWGNzUnhkUmdaME45eUE9PQ=
+ =
+description: Read only access to the whole directory
+cn: reader
+
+dn: cn=Jean Dupond,o=XBWA,ou=Customers,dc=customer,dc=com
+mobile: +33 6 12 34 56 78
+employeeType: admin
+userPassword:: e1NTSEF9dWZyZkZrMHBqd2JFKy96VXFHUFhYVHVKTTBCenFRQlR1elE1dmc9PQ=
+ =
+postalAddress: 1 rue de Paris
+givenName: Jean
+uid: jdupond
+telephoneNumber: +33 1 54 32 65 76
+mail: jdupond@tbwa.fr
+cn: Jean Dupond
+postalCode: 75001
+objectClass: mtPerson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+postOfficeBox: CEDEX 42
+mtAlias: dupond
+l: Paris
+sn: Dupond
+facsimileTelephoneNumber: +33 1 65 87 93 21
+c: France
+title: Directeur R&D
+
+dn: cn=Michel Duc,o=XBWA,ou=Customers,dc=customer,dc=com
+postalCode: 75001
+mobile: +33 6 12 34 56 78
+sn: Dupond
+facsimileTelephoneNumber: +33 1 65 87 93 21
+l: Paris
+postalAddress: 1 rue de Paris
+objectClass: mtPerson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+postOfficeBox: CEDEX 42
+mail: mduc@tbwa.fr
+telephoneNumber: +33 1 54 32 65 76
+givenName: Michel
+uid: mduc
+employeeType: user
+c: France
+cn: Michel Duc
+title: Webmaster
+userPassword:: e1NTSEF9dWZyZkZrMHBqd2JFKy96VXFHUFhYVHVKTTBCenFRQlR1elE1dmc9PQ=
+ =
+mtAlias: michel
+
+dn: cn=John Doe,o=Autoworld France,o=Autoworld,ou=Customers,dc=customer,dc=com
+sn: Dupond
+objectClass: mtPerson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+mail: jdoe@fr.autoworld.com
+givenName: John
+uid: jdoe
+employeeType: admin
+cn: John Doe
+mtAlias: johnny
+userPassword:: e1NTSEF9dWZyZkZrMHBqd2JFKy96VXFHUFhYVHVKTTBCenFRQlR1elE1dmc9PQ=
+ =
+
+dn: cn=Will Smith,o=Autoworld France,o=Autoworld,ou=Customers,dc=customer,dc=
+ com
+sn: Dupond
+objectClass: mtPerson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+mail: wsmith@fr.autoworld.com
+givenName: Will
+uid: wsmith
+employeeType: readonly
+cn: Will Smith
+mtAlias: will
+mtAlias: willy
+userPassword:: e1NTSEF9dWZyZkZrMHBqd2JFKy96VXFHUFhYVHVKTTBCenFRQlR1elE1dmc9PQ=
+ =
+
+dn: cn=Autoworld MetaAdmin,o=Autoworld,ou=Customers,dc=customer,dc=com
+employeeType: admin
+objectClass: mtPerson
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+mail: contact@autoworld.com
+givenName: Autoworld
+uid: autoworldadmin
+userPassword:: e1NTSEF9dWZyZkZrMHBqd2JFKy96VXFHUFhYVHVKTTBCenFRQlR1elE1dmc9PQ=
+ =
+sn: MetaAdmin
+cn: Autoworld MetaAdmin
+
+dn: o=Oldy,ou=Customers,dc=customer,dc=com
+postalCode: 92100
+o: Oldy
+l: Boulogne Billancourt
+postalAddress: 162-164 rue de Billancourt
+objectClass: mtOrganization
+objectClass: organization
+objectClass: top
+telephoneNumber: +33 1 45 11 22 33
+c: France
+mtStatus: archived
+facsimileTelephoneNumber: +33 1 43 54 11 15
+mtMonthlyQuota: 30
+uid: 35343
+
+dn: cn=options,o=Oldy,ou=Customers,dc=customer,dc=com
+objectClass: mtCustomerOptionList
+objectClass: top
+mtOption: Webinar
+mtOption: WebTV
+mtOption: Classement
+cn: options
+
+dn:: bXRSaWdodE5hbWU9VVJMIHNpbXBsaWZpw6llcyxjbj1BbnRvbiBTaW1tb25zLG89TWVkaWF0Z
+ WNoLG91PUludGVybmFsLGRjPW1lZGlhdGVjaCxkYz1mcg==
+objectClass: mtCustomerRight
+objectClass: top
+mtRightName:: VVJMIHNpbXBsaWZpw6llcw==
+mtRightValue: true
+mtRightType: boolean
+
+dn: mtRightName=ERP,cn=Anton Simmons,o=Customer,ou=Internal,dc=customer,dc=com
+objectClass: mtCustomerRight
+objectClass: top
+mtRightName: ERP
+mtRightValue: admin
+mtRightType: string
+
+dn: mtRightName=Annuaire,cn=Anton Simmons,o=Customer,ou=Internal,dc=customer
+ ,dc=com
+objectClass: mtCustomerRight
+objectClass: top
+mtRightName: Annuaire
+mtRightValue: true
+mtRightType: boolean
+
+dn: mtRightName=Bookmarks,cn=Anton Simmons,o=Customer,ou=Internal,dc=customer
+ ,dc=com
+objectClass: mtCustomerRight
+objectClass: top
+mtRightName: Bookmarks
+mtRightValue: true
+mtRightType: boolean
+
+dn: mtRightName=Admin Customer,cn=Anton Simmons,o=Customer,ou=Internal,dc=me
+ diatech,dc=fr
+objectClass: mtCustomerRight
+objectClass: top
+mtRightName: Admin Customer
+mtRightValue: true
+mtRightType: boolean
+
+dn: mtServerName=dedibox1,cn=Jean Dupond,o=XBWA,ou=Customers,dc=customer,dc=com
+objectClass: mtServerRight
+objectClass: top
+mtServerName: dedibox1
+mtRightValue: admin
+
+dn: cn=replicator,dc=customer,dc=com
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: replicator
+description: LDAP replicator account
+userPassword:: e1NTSEF9S3lQSnVMN2hLMzdoTnQyQUtwOVppSFRQUjlLSlFXNFBqKytRMWc9PQ=
+ =
+

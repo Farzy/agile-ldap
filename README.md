@@ -58,7 +58,7 @@ Author: Farzad FARID <ffarid@pragmatic-source.com>, <http://www.pragmatic-source
 
 Copyright (c) 2009 Pragmatic Source & Mediatech
 
-A big thank you to Antony Simonneau from Mediatech (http://www.mediatech.fr)
+A big thank you to Antony Simonneau from Mediatech <http://www.mediatech.fr>
 who let me publish this project under an open source license.
 
 License
@@ -69,6 +69,6 @@ GPLv3
 Links
 -----
 
--  shunit2, a Test::Unit for shell (Bash & Zsh): http://code.google.com/p/shunit2/
--  Monit, a monitoring tool: http://mmonit.com/monit/
+-  shunit2, a Test::Unit for shell (Bash & Zsh): <http://code.google.com/p/shunit2/>
+-  Monit, a monitoring tool: <http://mmonit.com/monit/>
 
